@@ -19,6 +19,8 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import javax.swing.JFormattedTextField;
 
 public class AO2026KlijentGUI extends JFrame {
 
@@ -52,6 +54,8 @@ public class AO2026KlijentGUI extends JFrame {
 	private JPasswordField txtLozinkaReg;
 	private JButton btnNazadNaPrijavu;
 	private JButton btnRegistracija;
+	private JLabel lblNewLabel_11;
+	private JTextField txtJMBG;
 
 	/**
 	 * Launch the application.
@@ -253,6 +257,7 @@ public class AO2026KlijentGUI extends JFrame {
 	private JPanel getRegistracijaPanel() {
 		if (registracijaPanel == null) {
 			registracijaPanel = new JPanel();
+			registracijaPanel.setBackground(new Color(238, 238, 238));
 			registracijaPanel.setLayout(null);
 			registracijaPanel.add(getLblNewLabel_4());
 			registracijaPanel.add(getLblNewLabel_5());
@@ -268,6 +273,8 @@ public class AO2026KlijentGUI extends JFrame {
 			registracijaPanel.add(getTxtLozinkaReg());
 			registracijaPanel.add(getBtnNazadNaPrijavu());
 			registracijaPanel.add(getBtnRegistracija());
+			registracijaPanel.add(getLblNewLabel_11());
+			registracijaPanel.add(getTxtJMBG());
 		}
 		return registracijaPanel;
 	}
@@ -305,7 +312,7 @@ public class AO2026KlijentGUI extends JFrame {
 		if (lblNewLabel_5 == null) {
 			lblNewLabel_5 = new JLabel("Ime:");
 			lblNewLabel_5.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			lblNewLabel_5.setBounds(19, 34, 61, 16);
+			lblNewLabel_5.setBounds(19, 30, 61, 16);
 		}
 		return lblNewLabel_5;
 	}
@@ -329,7 +336,7 @@ public class AO2026KlijentGUI extends JFrame {
 		if (lblNewLabel_8 == null) {
 			lblNewLabel_8 = new JLabel("Korisnicko ime:");
 			lblNewLabel_8.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			lblNewLabel_8.setBounds(20, 118, 108, 16);
+			lblNewLabel_8.setBounds(20, 152, 108, 16);
 		}
 		return lblNewLabel_8;
 	}
@@ -337,7 +344,7 @@ public class AO2026KlijentGUI extends JFrame {
 		if (lblNewLabel_9 == null) {
 			lblNewLabel_9 = new JLabel("Lozinka:");
 			lblNewLabel_9.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			lblNewLabel_9.setBounds(19, 146, 61, 16);
+			lblNewLabel_9.setBounds(19, 180, 61, 16);
 		}
 		return lblNewLabel_9;
 	}
@@ -353,7 +360,7 @@ public class AO2026KlijentGUI extends JFrame {
 		if (txtIme == null) {
 			txtIme = new JTextField();
 			txtIme.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			txtIme.setBounds(140, 34, 130, 26);
+			txtIme.setBounds(140, 25, 130, 26);
 			txtIme.setColumns(10);
 		}
 		return txtIme;
@@ -362,7 +369,7 @@ public class AO2026KlijentGUI extends JFrame {
 		if (txtPrezime == null) {
 			txtPrezime = new JTextField();
 			txtPrezime.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			txtPrezime.setBounds(140, 57, 130, 26);
+			txtPrezime.setBounds(140, 55, 130, 26);
 			txtPrezime.setColumns(10);
 		}
 		return txtPrezime;
@@ -380,7 +387,7 @@ public class AO2026KlijentGUI extends JFrame {
 		if (txtKorisnickoImeReg == null) {
 			txtKorisnickoImeReg = new JTextField();
 			txtKorisnickoImeReg.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			txtKorisnickoImeReg.setBounds(140, 113, 130, 26);
+			txtKorisnickoImeReg.setBounds(140, 145, 130, 26);
 			txtKorisnickoImeReg.setColumns(10);
 		}
 		return txtKorisnickoImeReg;
@@ -389,7 +396,7 @@ public class AO2026KlijentGUI extends JFrame {
 		if (txtLozinkaReg == null) {
 			txtLozinkaReg = new JPasswordField();
 			txtLozinkaReg.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			txtLozinkaReg.setBounds(140, 141, 130, 26);
+			txtLozinkaReg.setBounds(140, 175, 130, 26);
 		}
 		return txtLozinkaReg;
 	}
@@ -408,7 +415,7 @@ public class AO2026KlijentGUI extends JFrame {
 		}
 		return btnNazadNaPrijavu;
 	}
-/////// REGISTER|ime|prezime|username|email|password\n
+/////// REGISTER|ime|prezime|email|jmbg|username|password\n
 	private JButton getBtnRegistracija() {
 	    if (btnRegistracija == null) {
 	        btnRegistracija = new JButton("Registrujte se");
@@ -420,10 +427,27 @@ public class AO2026KlijentGUI extends JFrame {
 	                String ime = txtIme.getText().trim();
 	                String prezime = txtPrezime.getText().trim();
 	                String email = txtEmail.getText().trim();
-
-	                if (username.isEmpty() || password.isEmpty() || ime.isEmpty() || prezime.isEmpty() || email.isEmpty()) {
+	                
+	                String jmbg = txtJMBG.getText().trim();
+	                
+	                if (username.isEmpty() || password.isEmpty() || ime.isEmpty() || prezime.isEmpty() || email.isEmpty() 
+	                		|| jmbg.isEmpty() ) {
 	                    javax.swing.JOptionPane.showMessageDialog(null, "Sva polja moraju biti popunjena");
 	                    return;
+	                }
+	                
+	                // jmbg mora imati 13 cifara
+	                
+	                if(jmbg.length()!=13) {
+	                	javax.swing.JOptionPane.showMessageDialog(null, "JMBG mora imati tacno 13 cifara");
+	                	return;
+	                }else {
+	                	for(int i =0;i<jmbg.length();i++) {
+	                		if(!Character.isDigit(jmbg.charAt(i))) {
+	                			javax.swing.JOptionPane.showMessageDialog(null, "JMBG polje moze sadrzati samo cifre");
+	    	                	return;
+	                		}
+	                	}
 	                }
 
 	                if (!email.contains("@") || !email.contains(".")) {
@@ -437,7 +461,7 @@ public class AO2026KlijentGUI extends JFrame {
 	                    DataOutputStream izlaz = new DataOutputStream(klijentSoket.getOutputStream());
 	                    BufferedReader ulaz = new BufferedReader(new InputStreamReader(klijentSoket.getInputStream()));
 
-	                    String poruka = "REGISTER|" + ime + "|" + prezime + "|" + username + "|" + email + "|" + password + "\n";
+	                    String poruka = "REGISTER|" + ime + "|" + prezime + "|" + email + "|" + jmbg + "|" + username + "|" + password + "\n";
 	                    izlaz.writeBytes(poruka);
 
 	                    String odgovor = ulaz.readLine();
@@ -461,9 +485,27 @@ public class AO2026KlijentGUI extends JFrame {
 	        });
 
 	        btnRegistracija.setFont(new Font("Times New Roman", Font.BOLD, 15));
-	        btnRegistracija.setBounds(140, 179, 130, 29);
+	        btnRegistracija.setBounds(140, 200, 130, 29);
 	    }
 	    return btnRegistracija;
 	}
 
+	private JLabel getLblNewLabel_11() {
+		if (lblNewLabel_11 == null) {
+			lblNewLabel_11 = new JLabel("JMBG:");
+			lblNewLabel_11.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblNewLabel_11.setBounds(19, 124, 61, 16);
+		}
+		return lblNewLabel_11;
+	}
+	// jmbg mora da ima 13 cifara
+	private JTextField getTxtJMBG() {
+		if (txtJMBG == null) {
+			txtJMBG = new JTextField();
+			txtJMBG.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			txtJMBG.setBounds(140, 115, 130, 30);
+			txtJMBG.setColumns(10);
+		}
+		return txtJMBG;
+	}
 }
