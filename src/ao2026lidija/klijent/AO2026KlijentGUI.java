@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import java.awt.GridLayout;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
@@ -66,8 +68,6 @@ public class AO2026KlijentGUI extends JFrame {
 	private JLabel lblNewLabel_12;
 	private JLabel lblNewLabel_13;
 	private JLabel lblUlogovanKorisnik;
-	public enum Smena { JUTARNJA, POPODEVNA, VECERNJA }
-	public enum Pozicija { INFO, REDAR, MEDIJI, VIP }
 	private String ulogovaniUsername;
 	private JLabel lblNewLabel_13_1;
 	private JLabel lblNewLabel_13_1_1;
@@ -75,6 +75,8 @@ public class AO2026KlijentGUI extends JFrame {
 	private JButton btnPrijavaSmene;
 	private JLabel lblNewLabel_13_1_1_1;
 	private JButton btnNazadNaMeni;
+	public enum Smena { JUTARNJA, POPODEVNA, VECERNJA }
+	public enum Pozicija { INFO, REDAR, MEDIJI, VIP }
 
 
 	/**
@@ -566,20 +568,29 @@ public class AO2026KlijentGUI extends JFrame {
 		return prijavaVolPanel;
 	}
 	private JComboBox getCbSmena() {
-		if (cbSmena == null) {
-			cbSmena = new JComboBox();
-			cbSmena.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			cbSmena.setBounds(91, 58, 127, 27);
-		}
-		return cbSmena;
+	    if (cbSmena == null) {
+	        cbSmena = new JComboBox();
+	        cbSmena.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+	        cbSmena.setBounds(91, 58, 127, 27);
+
+	        cbSmena.setModel(
+	            new DefaultComboBoxModel<>(AO2026KlijentGUI.Smena.values())
+	        );
+	    }
+	    return cbSmena;
 	}
+
+
+
 	private JComboBox getCbPozicija() {
-		if (cbPozicija == null) {
-			cbPozicija = new JComboBox();
-			cbPozicija.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			cbPozicija.setBounds(91, 85, 127, 27);
-		}
-		return cbPozicija;
+	    if (cbPozicija == null) {
+	        cbPozicija = new JComboBox();
+	        cbPozicija.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+	        cbPozicija.setBounds(91, 85, 127, 27);
+
+	        cbPozicija.setModel(new javax.swing.DefaultComboBoxModel<>(Pozicija.values()));
+	    }
+	    return cbPozicija;
 	}
 	private JLabel getLblNewLabel_12() {
 		if (lblNewLabel_12 == null) {
@@ -666,8 +677,8 @@ public class AO2026KlijentGUI extends JFrame {
 
 	                    DataOutputStream izlaz = new DataOutputStream(klijentSoket.getOutputStream());
 	                    BufferedReader ulaz = new BufferedReader(new InputStreamReader(klijentSoket.getInputStream()));
-
-	                    String poruka = "PRIJAVA|" + ulogovaniUsername + "|" + smena + "|" + pozicija + "|" + datum +"\n";
+// PRIJAVA|username|smena|pozicija|datum
+	                    String poruka = "PRIJAVA|" + ulogovaniUsername + "|" + smena.name() + "|" + pozicija.name() + "|" + datum +"\n";
 	                    izlaz.writeBytes(poruka);
 
 	                    String odgovor = ulaz.readLine();
