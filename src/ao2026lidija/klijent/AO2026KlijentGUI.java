@@ -102,8 +102,29 @@ public class AO2026KlijentGUI extends JFrame {
 	public enum Smena { JUTARNJA, POPODEVNA, VECERNJA }
 	public enum Pozicija { INFO, REDAR, MEDIJI, VIP }
 
-	//cuvam datum za koji korisnik zeli da obrise prijavu
+	//cuvam datum za koji korisnik zeli da obrise prijavu// i za izmenu
 	private String datumZaBrisanje = null;
+	private String datumZaIzmenu = null;
+	//////////////////////////////
+	private JButton btnMeni;
+	private JLabel lblNewLabel_15_1_1_1;
+	private JButton btnIzmena;
+	private JLabel lblNewLabel_15_1_2;
+	private JPanel IzmenePanel;
+	private JLabel lblNewLabel_16_1;
+	private JComboBox<Smena> cbSmenaIzmena;
+	private JComboBox<Pozicija> cbPozicijaIzmena;
+	private JTextField txtDatumZaIzmenu;
+	private JLabel lblNewLabel_18;
+	private JButton btnIzmeni;
+	private JLabel lblIzmenaSmena;
+	private JLabel lblIzmenaPozicija;
+	private JButton btnIzmeniPotrva;
+	private JPasswordField txtPasswordIzmena;
+	private JLabel lblLozinkaIzmena;
+	
+	private Smena staraSmenaZaIzmenu = null;   // cuvam trenutnu smenu sa servera
+
 	
 	/**
 	 * Launch the application.
@@ -143,14 +164,27 @@ public class AO2026KlijentGUI extends JFrame {
 		cbPozicija.setModel(new javax.swing.DefaultComboBoxModel<>(Pozicija.values()));
 		contentPane.add(getPregledPanel(), "PREGLED");
 		contentPane.add(getBrisanjePanel(), "OTKAZIVANJE");
+		//brisanje
 		lblPrijavaZaBrisanje.setVisible(false);
 		txtpasswordOtkazivanje.setVisible(false);
 		btnPotvrdiBrisanje.setVisible(false);
 		btnPotvrdiBrisanje.setEnabled(false);
+		contentPane.add(getIzmenePanel(), "IZMENE");
 		datumZaBrisanje = null;
 		lblNewLabel_19.setVisible(false);
 
-
+		//izmena
+		cbPozicijaIzmena.setVisible(false);
+		cbSmenaIzmena.setVisible(false);
+		lblIzmenaPozicija.setVisible(false);
+		lblIzmenaSmena.setVisible(false);
+		lblLozinkaIzmena.setVisible(false);
+		txtPasswordIzmena.setVisible(false);
+		btnIzmeniPotrva.setVisible(false);
+		btnIzmeniPotrva.setEnabled(false);
+		
+		
+		
 	}
 
 	
@@ -780,6 +814,10 @@ public class AO2026KlijentGUI extends JFrame {
 			pregledPanel.add(getLblNewLabel_15_1());
 			pregledPanel.add(getLblNewLabel_15_1_1());
 			pregledPanel.add(getBtnOtkazivanje());
+			pregledPanel.add(getBtnMeni());
+			pregledPanel.add(getLblNewLabel_15_1_1_1());
+			pregledPanel.add(getBtnIzmena());
+			pregledPanel.add(getLblNewLabel_15_1_2());
 		}
 		return pregledPanel;
 	}
@@ -935,7 +973,7 @@ public class AO2026KlijentGUI extends JFrame {
 				}
 			});
 			btnPrikaziPrijaveKorisnika.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			btnPrikaziPrijaveKorisnika.setBounds(180, 110, 108, 29);
+			btnPrikaziPrijaveKorisnika.setBounds(316, 72, 108, 29);
 		}
 		return btnPrikaziPrijaveKorisnika;
 	}
@@ -960,7 +998,7 @@ public class AO2026KlijentGUI extends JFrame {
 		if (lblNewLabel_15_1_1 == null) {
 			lblNewLabel_15_1_1 = new JLabel("Da li zelite da otkazete neku prijavu?");
 			lblNewLabel_15_1_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			lblNewLabel_15_1_1.setBounds(21, 167, 267, 16);
+			lblNewLabel_15_1_1.setBounds(21, 125, 267, 16);
 		}
 		return lblNewLabel_15_1_1;
 	}
@@ -974,7 +1012,7 @@ public class AO2026KlijentGUI extends JFrame {
 				}
 			});
 			btnOtkazivanje.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			btnOtkazivanje.setBounds(180, 187, 108, 29);
+			btnOtkazivanje.setBounds(316, 120, 108, 29);
 		}
 		return btnOtkazivanje;
 	}
@@ -1202,5 +1240,355 @@ public class AO2026KlijentGUI extends JFrame {
 			btnPotvrdiBrisanje.setBounds(48, 217, 117, 29);
 		}
 		return btnPotvrdiBrisanje;
+	}
+	private JButton getBtnMeni() {
+		if (btnMeni == null) {
+			btnMeni = new JButton("MENI");
+			btnMeni.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "MENI");
+				}
+			});
+			btnMeni.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnMeni.setBounds(316, 227, 108, 29);
+		}
+		return btnMeni;
+	}
+	private JLabel getLblNewLabel_15_1_1_1() {
+		if (lblNewLabel_15_1_1_1 == null) {
+			lblNewLabel_15_1_1_1 = new JLabel("Da li zelite da izmenite neku prijavu?");
+			lblNewLabel_15_1_1_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblNewLabel_15_1_1_1.setBounds(21, 163, 267, 16);
+		}
+		return lblNewLabel_15_1_1_1;
+	}
+	private JButton getBtnIzmena() {
+		if (btnIzmena == null) {
+			btnIzmena = new JButton("Izmena");
+			btnIzmena.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "IZMENE");
+				}
+			});
+			btnIzmena.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnIzmena.setBounds(316, 158, 108, 29);
+		}
+		return btnIzmena;
+	}
+	private JLabel getLblNewLabel_15_1_2() {
+		if (lblNewLabel_15_1_2 == null) {
+			lblNewLabel_15_1_2 = new JLabel("Nazad na meni:");
+			lblNewLabel_15_1_2.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+			lblNewLabel_15_1_2.setBounds(216, 232, 125, 16);
+		}
+		return lblNewLabel_15_1_2;
+	}
+	private JPanel getIzmenePanel() {
+		if (IzmenePanel == null) {
+			IzmenePanel = new JPanel();
+			IzmenePanel.setLayout(null);
+			IzmenePanel.add(getLblNewLabel_16_1());
+			IzmenePanel.add(getCbSmenaIzmena());
+			IzmenePanel.add(getCbPozicijaIzmena());
+			IzmenePanel.add(getTxtDatumZaIzmenu());
+			IzmenePanel.add(getLblNewLabel_18());
+			IzmenePanel.add(getBtnIzmeni());
+			IzmenePanel.add(getLblIzmenaSmena());
+			IzmenePanel.add(getLblIzmenaPozicija());
+			IzmenePanel.add(getBtnIzmeniPotrva());
+			IzmenePanel.add(getTxtPasswordIzmena());
+			IzmenePanel.add(getLblLozinkaIzmena());
+		}
+		return IzmenePanel;
+	}
+	private JLabel getLblNewLabel_16_1() {
+		if (lblNewLabel_16_1 == null) {
+			lblNewLabel_16_1 = new JLabel("Izmena prijave za dan:");
+			lblNewLabel_16_1.setFont(new Font("Times New Roman", Font.BOLD, 15));
+			lblNewLabel_16_1.setBounds(24, 17, 158, 16);
+		}
+		return lblNewLabel_16_1;
+	}
+	private JComboBox<Smena> getCbSmenaIzmena() {
+		if (cbSmenaIzmena == null) {
+			cbSmenaIzmena = new JComboBox();
+			cbSmenaIzmena.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			cbSmenaIzmena.setBounds(24, 130, 128, 27);
+			
+			cbSmenaIzmena.setModel(new DefaultComboBoxModel<>(Smena.values()));
+		}
+		return cbSmenaIzmena;
+	}
+	private JComboBox<Pozicija> getCbPozicijaIzmena() {
+		if (cbPozicijaIzmena == null) {
+			cbPozicijaIzmena = new JComboBox<Pozicija>();
+			cbPozicijaIzmena.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			cbPozicijaIzmena.setBounds(24, 160, 128, 27);
+			
+			 cbPozicijaIzmena.setModel(new DefaultComboBoxModel<>(Pozicija.values()));
+			
+		}
+		return cbPozicijaIzmena;
+	}
+	private JTextField getTxtDatumZaIzmenu() {
+		if (txtDatumZaIzmenu == null) {
+			txtDatumZaIzmenu = new JTextField();
+			txtDatumZaIzmenu.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			txtDatumZaIzmenu.setBounds(24, 45, 130, 26);
+			txtDatumZaIzmenu.setColumns(10);
+		}
+		return txtDatumZaIzmenu;
+	}
+	private JLabel getLblNewLabel_18() {
+		if (lblNewLabel_18 == null) {
+			lblNewLabel_18 = new JLabel("(dd-MM-gggg)");
+			lblNewLabel_18.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblNewLabel_18.setBounds(164, 50, 94, 16);
+		}
+		return lblNewLabel_18;
+	}
+	private JButton getBtnIzmeni() {
+		if (btnIzmeni == null) {
+			btnIzmeni = new JButton("Izmeni");
+				btnIzmeni.addActionListener(new ActionListener()  {
+					    public void actionPerformed(ActionEvent e) {
+
+					        String username = ulogovaniUsername;
+					        String datum = txtDatumZaIzmenu.getText().trim();
+
+					        if (username == null || username.isEmpty()) {
+					            JOptionPane.showMessageDialog(null, "Niste ulogovani!");
+					            return;
+					        }
+
+					        if (datum.isEmpty()) {
+					            JOptionPane.showMessageDialog(null, "Unesite datum.");
+					            return;
+					        }
+
+					        // parsiranje + format provera
+					        java.time.format.DateTimeFormatter fmt =
+					                java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					        java.time.LocalDate datumVol;
+
+					        try {
+					            datumVol = java.time.LocalDate.parse(datum, fmt);
+					        } catch (Exception ex) {
+					            JOptionPane.showMessageDialog(null, "Datum mora biti u formatu dd-MM-yyyy");
+					            return;
+					        }
+
+					        // pproveravam datum prijave pre slanja serveru
+					        java.time.LocalDate prekosutra = java.time.LocalDate.now().plusDays(2);
+					        java.time.LocalDate krajTurnira = java.time.LocalDate.of(2026, 2, 1);
+
+					        if (datumVol.isBefore(prekosutra)) {
+					            JOptionPane.showMessageDialog(null, "Izmena nije dozvoljena za datume pre prekosutra.");
+					            return;
+					        }
+
+					        if (datumVol.isAfter(krajTurnira)) {
+					            JOptionPane.showMessageDialog(null, "Datum ne može biti posle 01-02-2026.");
+					            return;
+					        }
+
+					        try (Socket s = new Socket("localhost", 8090)) {
+
+					            DataOutputStream out = new DataOutputStream(s.getOutputStream());
+					            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+					            // IZMENA_PREGLED|username|datum
+					            out.writeBytes("IZMENA_PREGLED|" + username + "|" + datum + "\n");
+
+					            String odgovor = in.readLine();
+
+					            if (odgovor != null && odgovor.startsWith("OK|IZMENA_PREGLED|")) {
+
+					                // OK|IZMENA_PREGLED|datum|SMENA|POZICIJA|datumPrijave|STATUS
+					                String[] d = odgovor.split("\\|", 7);
+
+					                String datumSrv = d[2];
+					                String smenaStr = d[3];
+					                staraSmenaZaIzmenu = Smena.valueOf(smenaStr);  // cuvam smenu zbog zahteva o broju smena
+					                
+					                String pozicijaStr = d[4];
+					                String status = d[6];
+					                
+					              
+
+					                // pamtim datum!!!!!!!
+					                datumZaIzmenu = datumSrv;
+
+					                // prikazi drugi deo
+					                lblIzmenaSmena.setVisible(true);
+					                lblIzmenaPozicija.setVisible(true);
+					                
+					                cbSmenaIzmena.setVisible(true);
+					                cbPozicijaIzmena.setVisible(true);
+
+					                cbSmenaIzmena.setSelectedItem(Smena.valueOf(smenaStr));
+					                cbPozicijaIzmena.setSelectedItem(Pozicija.valueOf(pozicijaStr));
+
+					                // prikazi polje za lozinku + dugme potvrdi
+					                txtPasswordIzmena.setText("");
+					                txtPasswordIzmena.setVisible(true);
+					                lblLozinkaIzmena.setVisible(true);
+					                
+					                btnIzmeniPotrva.setVisible(true);
+
+					                // ako je zakljucana ili zavrsena - nema izmene
+					                if ("ZAKLJUCANA".equals(status) || "ZAVRSENA".equals(status)) {
+					                	btnIzmeniPotrva.setEnabled(false);
+					                    JOptionPane.showMessageDialog(null, "Prijava je " + status + " i ne može se izmeniti.");
+					                } else {
+					                	btnIzmeniPotrva.setEnabled(true);
+					                }
+
+					            } else if (odgovor != null && odgovor.startsWith("ERR|")) {
+
+					                // reset UI
+					                datumZaIzmenu = null;
+					                
+					                lblIzmenaSmena.setVisible(false);
+					                lblIzmenaPozicija.setVisible(false);
+
+
+					                cbSmenaIzmena.setVisible(false);
+					                cbPozicijaIzmena.setVisible(false);
+
+					                txtPasswordIzmena.setVisible(false);
+					                lblLozinkaIzmena.setVisible(false);
+
+					                btnIzmeniPotrva.setVisible(false);
+					                btnIzmeniPotrva.setEnabled(false);
+
+					                JOptionPane.showMessageDialog(null, odgovor);
+
+					            } else {
+					                JOptionPane.showMessageDialog(null, "Nepoznat odgovor servera: " + odgovor);
+					            }
+
+					        } catch (Exception ex) {
+					            JOptionPane.showMessageDialog(null, "Greška pri povezivanju sa serverom.");
+					        }
+					    }
+					});
+
+			btnIzmeni.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnIzmeni.setBounds(24, 75, 128, 29);
+		}
+		return btnIzmeni;
+	}
+	private JLabel getLblIzmenaSmena() {
+		if (lblIzmenaSmena == null) {
+			lblIzmenaSmena = new JLabel("Smena");
+			lblIzmenaSmena.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblIzmenaSmena.setBounds(164, 134, 94, 16);
+		}
+		return lblIzmenaSmena;
+	}
+	private JLabel getLblIzmenaPozicija() {
+		if (lblIzmenaPozicija == null) {
+			lblIzmenaPozicija = new JLabel("Pozicija");
+			lblIzmenaPozicija.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblIzmenaPozicija.setBounds(164, 164, 94, 16);
+		}
+		return lblIzmenaPozicija;
+	}
+	private JButton getBtnIzmeniPotrva() {
+		if (btnIzmeniPotrva == null) {
+			btnIzmeniPotrva = new JButton("Potvrdi");
+			btnIzmeniPotrva.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					if (ulogovaniUsername == null || ulogovaniUsername.isEmpty()) {
+				            JOptionPane.showMessageDialog(null, "Niste ulogovani!");
+				            return;
+				        }
+				        if (datumZaIzmenu == null) {
+				            JOptionPane.showMessageDialog(null, "Niste uneli datum smene koju zelite da izmenite");
+				            return;
+				        }
+
+				        String password = new String(txtPasswordIzmena.getPassword()).trim();
+				        if (password.isEmpty()) {
+				            JOptionPane.showMessageDialog(null, "Unesite lozinku za potvrdu.");
+				            return;
+				        }
+
+				        Smena novaSmena = (Smena) cbSmenaIzmena.getSelectedItem();
+				        Pozicija novaPoz = (Pozicija) cbPozicijaIzmena.getSelectedItem();
+
+				        int ok = JOptionPane.showConfirmDialog(
+				            null,
+				            "Da li ste sigurni da želite da izmenite prijavu za datum: " + datumZaIzmenu + "?",
+				            "Potvrda izmene",
+				            JOptionPane.YES_NO_OPTION
+				        );
+				        if (ok != JOptionPane.YES_OPTION) return;
+
+				        try (Socket s = new Socket("localhost", 8090)) {
+				            DataOutputStream out = new DataOutputStream(s.getOutputStream());
+				            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+				            // IZMENI|username|datum|NOVA_SMENA|NOVA_POZICIJA|password
+				            out.writeBytes("IZMENI|" + ulogovaniUsername + "|" + datumZaIzmenu + "|" +
+				                           novaSmena.name() + "|" + novaPoz.name() + "|" + password + "\n");
+
+				            String odgovor = in.readLine();
+
+				            if ("OK|IZMENI".equals(odgovor)) {
+				                JOptionPane.showMessageDialog(null, "Prijava je uspešno izmenjena!");
+
+				                // reset UI
+				                datumZaIzmenu = null;
+				                txtDatumZaIzmenu.setText("");
+
+				                lblIzmenaSmena.setVisible(false);
+				                lblIzmenaPozicija.setVisible(false);
+				                cbSmenaIzmena.setVisible(false);
+				                cbPozicijaIzmena.setVisible(false);
+
+				                txtPasswordIzmena.setText("");
+				                txtPasswordIzmena.setVisible(false);
+				                lblLozinkaIzmena.setVisible(false);
+
+				                btnIzmeniPotrva.setVisible(false);
+				                btnIzmeniPotrva.setEnabled(false);
+
+				                // vrati na pregled 
+				                ((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "PREGLED");
+
+				            } else if (odgovor != null && odgovor.startsWith("ERR|")) {
+				                JOptionPane.showMessageDialog(null, odgovor);
+				            } else {
+				                JOptionPane.showMessageDialog(null, "Nepoznat odgovor servera: " + odgovor);
+				            }
+
+				        } catch (Exception ex) {
+				            JOptionPane.showMessageDialog(null, "Greška pri povezivanju sa serverom.");
+				        }
+				    }
+				});
+
+			btnIzmeniPotrva.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnIzmeniPotrva.setBounds(24, 220, 128, 29);
+		}
+		return btnIzmeniPotrva;
+	}
+	private JPasswordField getTxtPasswordIzmena() {
+		if (txtPasswordIzmena == null) {
+			txtPasswordIzmena = new JPasswordField();
+			txtPasswordIzmena.setBounds(24, 190, 128, 26);
+		}
+		return txtPasswordIzmena;
+	}
+	private JLabel getLblLozinkaIzmena() {
+		if (lblLozinkaIzmena == null) {
+			lblLozinkaIzmena = new JLabel("Unesite lozinku za potvrdu");
+			lblLozinkaIzmena.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblLozinkaIzmena.setBounds(164, 195, 178, 16);
+		}
+		return lblLozinkaIzmena;
 	}
 }
