@@ -85,6 +85,8 @@ public class AO2026KlijentGUI extends JFrame {
 	private JLabel lblNewLabel_15;
 	private JTextField txtJMBGPregled;
 	private JButton btnNewButton_1;
+	private JTextField txtEmailPregled;
+	private JLabel lblNewLabel_15_1;
 	public enum Smena { JUTARNJA, POPODEVNA, VECERNJA }
 	public enum Pozicija { INFO, REDAR, MEDIJI, VIP }
 
@@ -753,6 +755,8 @@ public class AO2026KlijentGUI extends JFrame {
 			pregledPanel.add(getLblNewLabel_15());
 			pregledPanel.add(getTxtJMBGPregled());
 			pregledPanel.add(getBtnNewButton_1());
+			pregledPanel.add(getTxtEmailPregled());
+			pregledPanel.add(getLblNewLabel_15_1());
 		}
 		return pregledPanel;
 	}
@@ -794,10 +798,10 @@ public class AO2026KlijentGUI extends JFrame {
 			btnNewButton_1 = new JButton("Prikazi");
 			btnNewButton_1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					// PREGLED|username|jmbg\n
+					// PREGLED|email|jmbg\n
 
 
-	                String username = ulogovaniUsername;
+	                String email = txtEmailPregled.getText().trim();
 	                String jmbg = txtJMBGPregled.getText().trim();
 
 	                if (jmbg.isEmpty()) {
@@ -806,10 +810,14 @@ public class AO2026KlijentGUI extends JFrame {
 	                            "JMBG je obavezno polje");
 	                    return;
 	                }
-	                if (username==null || username.isEmpty()) {
+	                if (email==null || email.isEmpty()) {
 	                    javax.swing.JOptionPane.showMessageDialog(
 	                            null,
-	                            "Niste ulogovani");
+	                            "Email je obavezno polje");
+	                    return;
+	                }
+	                if(!email.contains("@")||!email.contains(".")) {
+	                	JOptionPane.showMessageDialog(null, "Email nije u dobrom formatu");
 	                    return;
 	                }
 	                // jmbg moze imati samo 13 cifara
@@ -831,8 +839,8 @@ public class AO2026KlijentGUI extends JFrame {
 	                            new DataOutputStream(klijentSoket.getOutputStream());
 	                    BufferedReader ulaz =
 	                            new BufferedReader(new InputStreamReader(klijentSoket.getInputStream()));
-///////////// PREGLED|username|jmbg\n
-	                    String poruka = "PREGLED|" + username + "|" + jmbg + "\n";
+///////////// PREGLED|email|jmbg\n
+	                    String poruka = "PREGLED|" + email + "|" + jmbg + "\n";
 	                    izlaz.writeBytes(poruka);
 
 	                    String odgovor = ulaz.readLine();
@@ -847,7 +855,7 @@ public class AO2026KlijentGUI extends JFrame {
 	                        String payload = (delovi.length == 4) ? delovi[3] : "";
 
 	                        StringBuilder prikaz = new StringBuilder();
-	                        prikaz.append("Korisnik: ").append(username).append("\n");
+	                        prikaz.append("Korisnik: ").append(ulogovaniUsername).append("\n");
 	                        prikaz.append("Broj prijava: ").append(n).append("\n");
 	                        prikaz.append("----------------------------------------\n");
 
@@ -886,8 +894,25 @@ public class AO2026KlijentGUI extends JFrame {
 				}
 			});
 			btnNewButton_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			btnNewButton_1.setBounds(168, 77, 117, 29);
+			btnNewButton_1.setBounds(158, 110, 130, 29);
 		}
 		return btnNewButton_1;
+	}
+	private JTextField getTxtEmailPregled() {
+		if (txtEmailPregled == null) {
+			txtEmailPregled = new JTextField();
+			txtEmailPregled.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			txtEmailPregled.setColumns(10);
+			txtEmailPregled.setBounds(158, 72, 130, 26);
+		}
+		return txtEmailPregled;
+	}
+	private JLabel getLblNewLabel_15_1() {
+		if (lblNewLabel_15_1 == null) {
+			lblNewLabel_15_1 = new JLabel("Unesite svoj email:");
+			lblNewLabel_15_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblNewLabel_15_1.setBounds(21, 77, 125, 16);
+		}
+		return lblNewLabel_15_1;
 	}
 }
