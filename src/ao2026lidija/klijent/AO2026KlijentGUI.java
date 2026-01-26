@@ -31,6 +31,7 @@ import java.awt.Color;
 import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
+import javax.swing.JScrollBar;
 
 public class AO2026KlijentGUI extends JFrame {
 
@@ -84,13 +85,26 @@ public class AO2026KlijentGUI extends JFrame {
 	private JLabel lblNewlbl15;
 	private JLabel lblNewLabel_15;
 	private JTextField txtJMBGPregled;
-	private JButton btnNewButton_1;
+	private JButton btnPrikaziPrijaveKorisnika;
 	private JTextField txtEmailPregled;
 	private JLabel lblNewLabel_15_1;
+	private JLabel lblNewLabel_15_1_1;
+	private JButton btnOtkazivanje;
+	private JPanel brisanjePanel;
+	private JLabel lblNewLabel_16;
+	private JTextField txtDatumZaOtkazivanje;
+	private JLabel lblNewLabel_17;
+	private JButton btnPrikaziPrijavuZaBrisanje;
+	private JLabel lblPrijavaZaBrisanje;
+	private JPasswordField txtpasswordOtkazivanje;
+	private JLabel lblNewLabel_19;
+	private JButton btnPotvrdiBrisanje;
 	public enum Smena { JUTARNJA, POPODEVNA, VECERNJA }
 	public enum Pozicija { INFO, REDAR, MEDIJI, VIP }
 
-
+	//cuvam datum za koji korisnik zeli da obrise prijavu
+	private String datumZaBrisanje = null;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -128,6 +142,13 @@ public class AO2026KlijentGUI extends JFrame {
 		cbSmena.setModel(new javax.swing.DefaultComboBoxModel<>(Smena.values()));
 		cbPozicija.setModel(new javax.swing.DefaultComboBoxModel<>(Pozicija.values()));
 		contentPane.add(getPregledPanel(), "PREGLED");
+		contentPane.add(getBrisanjePanel(), "OTKAZIVANJE");
+		lblPrijavaZaBrisanje.setVisible(false);
+		txtpasswordOtkazivanje.setVisible(false);
+		btnPotvrdiBrisanje.setVisible(false);
+		btnPotvrdiBrisanje.setEnabled(false);
+		datumZaBrisanje = null;
+		lblNewLabel_19.setVisible(false);
 
 
 	}
@@ -754,9 +775,11 @@ public class AO2026KlijentGUI extends JFrame {
 			pregledPanel.add(getLblNewlbl15());
 			pregledPanel.add(getLblNewLabel_15());
 			pregledPanel.add(getTxtJMBGPregled());
-			pregledPanel.add(getBtnNewButton_1());
+			pregledPanel.add(getBtnPrikaziPrijaveKorisnika());
 			pregledPanel.add(getTxtEmailPregled());
 			pregledPanel.add(getLblNewLabel_15_1());
+			pregledPanel.add(getLblNewLabel_15_1_1());
+			pregledPanel.add(getBtnOtkazivanje());
 		}
 		return pregledPanel;
 	}
@@ -788,15 +811,15 @@ public class AO2026KlijentGUI extends JFrame {
 		if (txtJMBGPregled == null) {
 			txtJMBGPregled = new JTextField();
 			txtJMBGPregled.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			txtJMBGPregled.setBounds(158, 39, 130, 26);
+			txtJMBGPregled.setBounds(158, 39, 146, 26);
 			txtJMBGPregled.setColumns(10);
 		}
 		return txtJMBGPregled;
 	}
-	private JButton getBtnNewButton_1() {
-		if (btnNewButton_1 == null) {
-			btnNewButton_1 = new JButton("Prikazi");
-			btnNewButton_1.addActionListener(new ActionListener() {
+	private JButton getBtnPrikaziPrijaveKorisnika() {
+		if (btnPrikaziPrijaveKorisnika == null) {
+			btnPrikaziPrijaveKorisnika = new JButton("Prikazi");
+			btnPrikaziPrijaveKorisnika.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// PREGLED|email|jmbg\n
 
@@ -849,15 +872,30 @@ public class AO2026KlijentGUI extends JFrame {
 	                    if (odgovor != null && odgovor.startsWith("OK|PREGLED|")) {
 	                        // obradi i ispiši
 	                    	
-	                    	// OK|PREGLED|N|datum,smena,pozicija,datumPrijave;...
-	                        String[] delovi = odgovor.split("\\|", 4);
-	                        int n = Integer.parseInt(delovi[2]);
-	                        String payload = (delovi.length == 4) ? delovi[3] : "";
+	                    	// OK|PREGLED|ime|prezime|username|jmbg|email|count|payload
+	                    	String[] delovi = odgovor.split("\\|", 9);
 
-	                        StringBuilder prikaz = new StringBuilder();
-	                        prikaz.append("Korisnik: ").append(ulogovaniUsername).append("\n");
-	                        prikaz.append("Broj prijava: ").append(n).append("\n");
-	                        prikaz.append("----------------------------------------\n");
+	                    	String ime = delovi[2];
+	                    	String prezime = delovi[3];
+	                    	String username = delovi[4];
+	                    	String jmbgSrv = delovi[5];
+	                    	String emailSrv = delovi[6];
+	                    	int n = Integer.parseInt(delovi[7]);
+	                    	String payload = (delovi.length == 9) ? delovi[8] : "";
+	                    	
+	                    	if(!username.equals(ulogovaniUsername)) {
+	                    		JOptionPane.showMessageDialog(null, "Pogresan JMBG i email");
+	                    		return;
+	                    	}
+
+	                    	StringBuilder prikaz = new StringBuilder();
+	                    	prikaz.append("Ime: ").append(ime).append("\n");
+	                    	prikaz.append("Prezime: ").append(prezime).append("\n");
+	                    	prikaz.append("Username: ").append(username).append("\n");
+	                    	prikaz.append("JMBG: ").append(jmbgSrv).append("\n");
+	                    	prikaz.append("Email: ").append(emailSrv).append("\n");
+	                    	prikaz.append("----------------------------------------\n");
+	                    	prikaz.append("Broj prijava: ").append(n).append("\n\n");
 
 	                        if (n == 0 || payload.trim().isEmpty()) {
 	                            prikaz.append("Nemate nijednu prijavu.\n");
@@ -869,11 +907,14 @@ public class AO2026KlijentGUI extends JFrame {
 	                                String smena = (f.length > 1) ? f[1] : "";
 	                                String pozicija = (f.length > 2) ? f[2] : "";
 	                                String datumPrijave = (f.length > 3) ? f[3] : "";
+	                                String status = (f.length > 4) ? f[4] : "";
+
 
 	                                prikaz.append("Datum: ").append(datum)
 	                                      .append(" | Smena: ").append(smena)
 	                                      .append(" | Pozicija: ").append(pozicija)
 	                                      .append("\nPrijavljeno: ").append(datumPrijave)
+	                                      .append("\nStatus: ").append(status)
 	                                      .append("\n\n");
 	                            }
 	                        }
@@ -893,17 +934,17 @@ public class AO2026KlijentGUI extends JFrame {
 	            
 				}
 			});
-			btnNewButton_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			btnNewButton_1.setBounds(158, 110, 130, 29);
+			btnPrikaziPrijaveKorisnika.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnPrikaziPrijaveKorisnika.setBounds(180, 110, 108, 29);
 		}
-		return btnNewButton_1;
+		return btnPrikaziPrijaveKorisnika;
 	}
 	private JTextField getTxtEmailPregled() {
 		if (txtEmailPregled == null) {
 			txtEmailPregled = new JTextField();
 			txtEmailPregled.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 			txtEmailPregled.setColumns(10);
-			txtEmailPregled.setBounds(158, 72, 130, 26);
+			txtEmailPregled.setBounds(158, 72, 146, 26);
 		}
 		return txtEmailPregled;
 	}
@@ -914,5 +955,252 @@ public class AO2026KlijentGUI extends JFrame {
 			lblNewLabel_15_1.setBounds(21, 77, 125, 16);
 		}
 		return lblNewLabel_15_1;
+	}
+	private JLabel getLblNewLabel_15_1_1() {
+		if (lblNewLabel_15_1_1 == null) {
+			lblNewLabel_15_1_1 = new JLabel("Da li zelite da otkazete neku prijavu?");
+			lblNewLabel_15_1_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblNewLabel_15_1_1.setBounds(21, 167, 267, 16);
+		}
+		return lblNewLabel_15_1_1;
+	}
+	private JButton getBtnOtkazivanje() {
+		if (btnOtkazivanje == null) {
+			btnOtkazivanje = new JButton("Otkazivanje");
+			btnOtkazivanje.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "OTKAZIVANJE");
+					
+				}
+			});
+			btnOtkazivanje.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnOtkazivanje.setBounds(180, 187, 108, 29);
+		}
+		return btnOtkazivanje;
+	}
+	private JPanel getBrisanjePanel() {
+		if (brisanjePanel == null) {
+			brisanjePanel = new JPanel();
+			brisanjePanel.setLayout(null);
+			brisanjePanel.add(getLblNewLabel_16());
+			brisanjePanel.add(getTxtDatumZaOtkazivanje());
+			brisanjePanel.add(getLblNewLabel_17());
+			brisanjePanel.add(getBtnPrikaziPrijavuZaBrisanje());
+			brisanjePanel.add(getLblPrijavaZaBrisanje());
+			brisanjePanel.add(getTxtpasswordOtkazivanje());
+			brisanjePanel.add(getLblNewLabel_19());
+			brisanjePanel.add(getBtnPotvrdiBrisanje());
+		}
+		return brisanjePanel;
+	}
+	private JLabel getLblNewLabel_16() {
+		if (lblNewLabel_16 == null) {
+			lblNewLabel_16 = new JLabel("Brisanje prijave za dan:");
+			lblNewLabel_16.setFont(new Font("Times New Roman", Font.BOLD, 15));
+			lblNewLabel_16.setBounds(28, 17, 158, 16);
+		}
+		return lblNewLabel_16;
+	}
+	private JTextField getTxtDatumZaOtkazivanje() {
+		if (txtDatumZaOtkazivanje == null) {
+			txtDatumZaOtkazivanje = new JTextField();
+			txtDatumZaOtkazivanje.setBounds(38, 40, 130, 26);
+			txtDatumZaOtkazivanje.setColumns(10);
+		}
+		return txtDatumZaOtkazivanje;
+	}
+	private JLabel getLblNewLabel_17() {
+		if (lblNewLabel_17 == null) {
+			lblNewLabel_17 = new JLabel("(dd-MM-gggg)");
+			lblNewLabel_17.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblNewLabel_17.setBounds(181, 45, 94, 16);
+		}
+		return lblNewLabel_17;
+	}
+	private JButton getBtnPrikaziPrijavuZaBrisanje() {
+		if (btnPrikaziPrijavuZaBrisanje == null) {
+			btnPrikaziPrijavuZaBrisanje = new JButton("Obrisi");
+			btnPrikaziPrijavuZaBrisanje.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// poziv za prikazivanje prijave koju korisnik zeli da obrise
+					String username = ulogovaniUsername;
+					String datum = txtDatumZaOtkazivanje.getText().trim();
+
+					if (username == null || username.isEmpty()) {
+					    JOptionPane.showMessageDialog(null, "Niste ulogovani!");
+					    return;
+					}
+
+					try {
+					    // validacija datuma (da ne saljes glupost)
+					    java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					    java.time.LocalDate.parse(datum, fmt);
+					} catch (Exception ex) {
+					    JOptionPane.showMessageDialog(null, "Datum mora biti u formatu dd-MM-yyyy");
+					    return;
+					}
+
+					try (Socket s = new Socket("localhost", 8090)) {
+					    DataOutputStream out = new DataOutputStream(s.getOutputStream());
+					    BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+					    out.writeBytes("OTKAZI_PREGLED|" + username + "|" + datum + "\n");
+
+					    String odgovor = in.readLine();
+
+					    if (odgovor != null && odgovor.startsWith("OK|OTKAZI_PREGLED|")) {
+
+					        // OK|OTKAZI_PREGLED|datum|SMENA|POZICIJA|datumPrijave|STATUS
+					        String[] d = odgovor.split("\\|", 7);
+					        String datumSrv = d[2];
+					        String smena = d[3];
+					        String pozicija = d[4];
+					        String datumPrijave = d[5];
+					        String status = d[6];
+
+					        // prikaz detalja
+					        lblPrijavaZaBrisanje.setText(
+					            "<html><b>Pronađena prijava</b><br>" +
+					            "Datum: " + datumSrv + "<br>" +
+					            "Smena: " + smena + "<br>" +
+					            "Pozicija: " + pozicija + "<br>" +
+					            "Datum prijave: " + datumPrijave + "<br>" +
+					            "Status: " + status + "</html>"
+					        );
+					        lblPrijavaZaBrisanje.setVisible(true);
+
+					        // zapamti datum koji je potvrđen/prikazan
+					        datumZaBrisanje = datumSrv;
+
+					        // otvori opciju za potvrdu lozinkom
+					        txtpasswordOtkazivanje.setText("");
+					        txtpasswordOtkazivanje.setVisible(true);
+					        
+					        btnPotvrdiBrisanje.setVisible(true);
+
+					        // ako je zakljucana ili zavrsena - ne daj brisanje
+					        if ("ZAKLJUCANA".equals(status) || "ZAVRSENA".equals(status)) {
+					            btnPotvrdiBrisanje.setEnabled(false);
+					            JOptionPane.showMessageDialog(null, "Prijava je " + status + " i ne može se otkazati.");
+					        } else {
+					            btnPotvrdiBrisanje.setEnabled(true);
+					        }
+
+					    } else if (odgovor != null && odgovor.startsWith("ERR|")) {
+					        // resetuj UI stanje
+					        datumZaBrisanje = null;
+					        lblPrijavaZaBrisanje.setVisible(false);
+					        txtpasswordOtkazivanje.setVisible(false);
+					        btnPotvrdiBrisanje.setEnabled(false);
+					        lblNewLabel_19.setVisible(true);
+
+					        JOptionPane.showMessageDialog(null, odgovor);
+					    } else {
+					        JOptionPane.showMessageDialog(null, "Nepoznat odgovor servera: " + odgovor);
+					    }
+
+					} catch (Exception ex) {
+					    JOptionPane.showMessageDialog(null, "Greška pri povezivanju sa serverom.");
+					}
+
+					
+					
+				}
+			});
+			btnPrikaziPrijavuZaBrisanje.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnPrikaziPrijavuZaBrisanje.setBounds(48, 64, 117, 29);
+		}
+		return btnPrikaziPrijavuZaBrisanje;
+	}
+	private JLabel getLblPrijavaZaBrisanje() {
+		if (lblPrijavaZaBrisanje == null) {
+			lblPrijavaZaBrisanje = new JLabel("");
+			lblPrijavaZaBrisanje.setBackground(new Color(254, 231, 253));
+			lblPrijavaZaBrisanje.setBounds(19, 91, 404, 98);
+		}
+		return lblPrijavaZaBrisanje;
+	}
+	private JPasswordField getTxtpasswordOtkazivanje() {
+		if (txtpasswordOtkazivanje == null) {
+			txtpasswordOtkazivanje = new JPasswordField();
+			txtpasswordOtkazivanje.setBounds(38, 191, 130, 26);
+		}
+		return txtpasswordOtkazivanje;
+	}
+	private JLabel getLblNewLabel_19() {
+		if (lblNewLabel_19 == null) {
+			lblNewLabel_19 = new JLabel("Unesite loziku");
+			lblNewLabel_19.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblNewLabel_19.setBounds(181, 196, 94, 16);
+		}
+		return lblNewLabel_19;
+	}
+	private JButton getBtnPotvrdiBrisanje() {
+		if (btnPotvrdiBrisanje == null) {
+			btnPotvrdiBrisanje = new JButton("Potvrdi");
+			btnPotvrdiBrisanje.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String username = ulogovaniUsername;
+
+					if (datumZaBrisanje == null) {
+					    JOptionPane.showMessageDialog(null, "Prvo pronađite prijavu (Prikaži).");
+					    return;
+					}
+
+					String password = new String(txtpasswordOtkazivanje.getPassword()).trim();
+					if (password.isEmpty()) {
+					    JOptionPane.showMessageDialog(null, "Unesite lozinku kao potvrdu.");
+					    return;
+					}
+
+					// confirm dialog 
+					int ok = JOptionPane.showConfirmDialog(
+					    null,
+					    "Da li ste sigurni da želite da otkažete prijavu za datum: " + datumZaBrisanje + "?",
+					    "Potvrda",
+					    JOptionPane.YES_NO_OPTION
+					);
+					if (ok != JOptionPane.YES_OPTION) return;
+
+					try (Socket s = new Socket("localhost", 8090)) {
+					    DataOutputStream out = new DataOutputStream(s.getOutputStream());
+					    BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+					    out.writeBytes("OTKAZI|" + username + "|" + datumZaBrisanje + "|" + password + "\n");
+
+					    String odgovor = in.readLine();
+
+					    if ("OK|OTKAZI".equals(odgovor)) {
+					        JOptionPane.showMessageDialog(null, "Prijava je uspešno otkazana!");
+					        // vrati na predgled prijava
+					        
+					        ((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "PREGLED");
+					        
+					        // reset UI
+					        datumZaBrisanje = null;
+					        txtDatumZaOtkazivanje.setText("");
+					        lblPrijavaZaBrisanje.setVisible(false);
+					        txtpasswordOtkazivanje.setText("");
+					        lblNewLabel_19.setVisible(false);
+					        txtpasswordOtkazivanje.setVisible(false);
+					        btnPotvrdiBrisanje.setVisible(false);
+					        btnPotvrdiBrisanje.setEnabled(false);
+
+					    } else if (odgovor != null && odgovor.startsWith("ERR|")) {
+					        JOptionPane.showMessageDialog(null, odgovor);
+					    } else {
+					        JOptionPane.showMessageDialog(null, "Nepoznat odgovor servera: " + odgovor);
+					    }
+
+					} catch (Exception ex) {
+					    JOptionPane.showMessageDialog(null, "Greška pri povezivanju sa serverom.");
+					}
+
+				}
+			});
+			btnPotvrdiBrisanje.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnPotvrdiBrisanje.setBounds(48, 217, 117, 29);
+		}
+		return btnPotvrdiBrisanje;
 	}
 }
