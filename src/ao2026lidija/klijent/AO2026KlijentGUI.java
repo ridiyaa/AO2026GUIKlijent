@@ -1379,10 +1379,10 @@ public class AO2026KlijentGUI extends JFrame {
 					        }
 
 					        // pproveravam datum prijave pre slanja serveru
-					        java.time.LocalDate prekosutra = java.time.LocalDate.now().plusDays(2);
+					        java.time.LocalDate sutra = java.time.LocalDate.now().plusDays(1);
 					        java.time.LocalDate krajTurnira = java.time.LocalDate.of(2026, 2, 1);
 
-					        if (datumVol.isBefore(prekosutra)) {
+					        if (datumVol.isBefore(sutra)) {
 					            JOptionPane.showMessageDialog(null, "Izmena nije dozvoljena za datume pre prekosutra.");
 					            return;
 					        }
