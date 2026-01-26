@@ -9,6 +9,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import ao2026lidija.klijent.AO2026KlijentGUI.Pozicija;
+import ao2026lidija.klijent.AO2026KlijentGUI.Smena;
+
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -63,8 +67,8 @@ public class AO2026KlijentGUI extends JFrame {
 	private JLabel lblNewLabel_11;
 	private JTextField txtJMBG;
 	private JPanel prijavaVolPanel;
-	private JComboBox cbSmena;
-	private JComboBox cbPozicija;
+	private JComboBox<Smena> cbSmena;
+	private JComboBox<Pozicija> cbPozicija;
 	private JLabel lblNewLabel_12;
 	private JLabel lblNewLabel_13;
 	private JLabel lblUlogovanKorisnik;
@@ -75,6 +79,12 @@ public class AO2026KlijentGUI extends JFrame {
 	private JButton btnPrijavaSmene;
 	private JLabel lblNewLabel_13_1_1_1;
 	private JButton btnNazadNaMeni;
+	private JPanel pregledPanel;
+	private JLabel lblNewLabel_14;
+	private JLabel lblNewlbl15;
+	private JLabel lblNewLabel_15;
+	private JTextField txtJMBGPregled;
+	private JButton btnNewButton_1;
 	public enum Smena { JUTARNJA, POPODEVNA, VECERNJA }
 	public enum Pozicija { INFO, REDAR, MEDIJI, VIP }
 
@@ -115,6 +125,7 @@ public class AO2026KlijentGUI extends JFrame {
 		// stavljam da se u combo box enum bira
 		cbSmena.setModel(new javax.swing.DefaultComboBoxModel<>(Smena.values()));
 		cbPozicija.setModel(new javax.swing.DefaultComboBoxModel<>(Pozicija.values()));
+		contentPane.add(getPregledPanel(), "PREGLED");
 
 
 	}
@@ -273,6 +284,11 @@ public class AO2026KlijentGUI extends JFrame {
 	private JButton getBtnPregled() {
 		if (btnPregled == null) {
 			btnPregled = new JButton("Pregled prijava");
+			btnPregled.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "PREGLED");
+				}
+			});
 			btnPregled.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 			btnPregled.setBounds(20, 60, 160, 30);
 		}
@@ -564,10 +580,11 @@ public class AO2026KlijentGUI extends JFrame {
 			prijavaVolPanel.add(getBtnPrijavaSmene());
 			prijavaVolPanel.add(getLblNewLabel_13_1_1_1());
 			prijavaVolPanel.add(getBtnNazadNaMeni());
+			prijavaVolPanel.add(getLblNewLabel_14());
 		}
 		return prijavaVolPanel;
 	}
-	private JComboBox getCbSmena() {
+	private JComboBox<Smena> getCbSmena() {
 	    if (cbSmena == null) {
 	        cbSmena = new JComboBox();
 	        cbSmena.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -582,7 +599,7 @@ public class AO2026KlijentGUI extends JFrame {
 
 
 
-	private JComboBox getCbPozicija() {
+	private JComboBox<Pozicija> getCbPozicija() {
 	    if (cbPozicija == null) {
 	        cbPozicija = new JComboBox();
 	        cbPozicija.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -686,7 +703,7 @@ public class AO2026KlijentGUI extends JFrame {
 
 	                    // OBRADA ODGOVORA
 	                    if ("OK|PRIJAVA".equals(odgovor)) {
-	                    	JOptionPane.showMessageDialog(null, "Uspešno ste se prijavili!");
+	                    	JOptionPane.showMessageDialog(null, "Uspesno ste se prijavili!");
 	                    	((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "MENI");
 	                    } else if (odgovor != null && odgovor.startsWith("ERR|")) {
 	                        javax.swing.JOptionPane.showMessageDialog(null, odgovor);
@@ -727,5 +744,150 @@ public class AO2026KlijentGUI extends JFrame {
 			btnNazadNaMeni.setBounds(91, 179, 127, 29);
 		}
 		return btnNazadNaMeni;
+	}
+	private JPanel getPregledPanel() {
+		if (pregledPanel == null) {
+			pregledPanel = new JPanel();
+			pregledPanel.setLayout(null);
+			pregledPanel.add(getLblNewlbl15());
+			pregledPanel.add(getLblNewLabel_15());
+			pregledPanel.add(getTxtJMBGPregled());
+			pregledPanel.add(getBtnNewButton_1());
+		}
+		return pregledPanel;
+	}
+	private JLabel getLblNewLabel_14() {
+		if (lblNewLabel_14 == null) {
+			lblNewLabel_14 = new JLabel("(dd-MM-gggg)");
+			lblNewLabel_14.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+			lblNewLabel_14.setBounds(222, 117, 82, 16);
+		}
+		return lblNewLabel_14;
+	}
+	private JLabel getLblNewlbl15() {
+		if (lblNewlbl15 == null) {
+			lblNewlbl15 = new JLabel("Pregled svih prijava");
+			lblNewlbl15.setFont(new Font("Times New Roman", Font.BOLD, 15));
+			lblNewlbl15.setBounds(50, 6, 132, 16);
+		}
+		return lblNewlbl15;
+	}
+	private JLabel getLblNewLabel_15() {
+		if (lblNewLabel_15 == null) {
+			lblNewLabel_15 = new JLabel("Unesite svoj JMBG:");
+			lblNewLabel_15.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblNewLabel_15.setBounds(21, 44, 125, 16);
+		}
+		return lblNewLabel_15;
+	}
+	private JTextField getTxtJMBGPregled() {
+		if (txtJMBGPregled == null) {
+			txtJMBGPregled = new JTextField();
+			txtJMBGPregled.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			txtJMBGPregled.setBounds(158, 39, 130, 26);
+			txtJMBGPregled.setColumns(10);
+		}
+		return txtJMBGPregled;
+	}
+	private JButton getBtnNewButton_1() {
+		if (btnNewButton_1 == null) {
+			btnNewButton_1 = new JButton("Prikazi");
+			btnNewButton_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// PREGLED|username|jmbg\n
+
+
+	                String username = ulogovaniUsername;
+	                String jmbg = txtJMBGPregled.getText().trim();
+
+	                if (jmbg.isEmpty()) {
+	                    javax.swing.JOptionPane.showMessageDialog(
+	                            null,
+	                            "JMBG je obavezno polje");
+	                    return;
+	                }
+	                if (username==null || username.isEmpty()) {
+	                    javax.swing.JOptionPane.showMessageDialog(
+	                            null,
+	                            "Niste ulogovani");
+	                    return;
+	                }
+	                // jmbg moze imati samo 13 cifara
+	                if (jmbg.length() != 13) {
+	                    JOptionPane.showMessageDialog(null, "JMBG mora imati tacno 13 cifara");
+	                    return;
+	                }
+	                for (int i = 0; i < jmbg.length(); i++) {
+	                    if (!Character.isDigit(jmbg.charAt(i))) {
+	                        JOptionPane.showMessageDialog(null, "JMBG sme sadrzati samo cifre");
+	                        return;
+	                    }
+	                }
+
+	                try {
+	                    Socket klijentSoket = new Socket("localhost", 8090);
+
+	                    DataOutputStream izlaz =
+	                            new DataOutputStream(klijentSoket.getOutputStream());
+	                    BufferedReader ulaz =
+	                            new BufferedReader(new InputStreamReader(klijentSoket.getInputStream()));
+///////////// PREGLED|username|jmbg\n
+	                    String poruka = "PREGLED|" + username + "|" + jmbg + "\n";
+	                    izlaz.writeBytes(poruka);
+
+	                    String odgovor = ulaz.readLine();
+	                    klijentSoket.close();
+
+	                    if (odgovor != null && odgovor.startsWith("OK|PREGLED|")) {
+	                        // obradi i ispiši
+	                    	
+	                    	// OK|PREGLED|N|datum,smena,pozicija,datumPrijave;...
+	                        String[] delovi = odgovor.split("\\|", 4);
+	                        int n = Integer.parseInt(delovi[2]);
+	                        String payload = (delovi.length == 4) ? delovi[3] : "";
+
+	                        StringBuilder prikaz = new StringBuilder();
+	                        prikaz.append("Korisnik: ").append(username).append("\n");
+	                        prikaz.append("Broj prijava: ").append(n).append("\n");
+	                        prikaz.append("----------------------------------------\n");
+
+	                        if (n == 0 || payload.trim().isEmpty()) {
+	                            prikaz.append("Nemate nijednu prijavu.\n");
+	                        } else {
+	                            String[] items = payload.split(";");
+	                            for (String it : items) {
+	                                String[] f = it.split(",", -1);
+	                                String datum = (f.length > 0) ? f[0] : "";
+	                                String smena = (f.length > 1) ? f[1] : "";
+	                                String pozicija = (f.length > 2) ? f[2] : "";
+	                                String datumPrijave = (f.length > 3) ? f[3] : "";
+
+	                                prikaz.append("Datum: ").append(datum)
+	                                      .append(" | Smena: ").append(smena)
+	                                      .append(" | Pozicija: ").append(pozicija)
+	                                      .append("\nPrijavljeno: ").append(datumPrijave)
+	                                      .append("\n\n");
+	                            }
+	                        }
+	                        JOptionPane.showMessageDialog(null, prikaz.toString());
+	                    	
+	                    } else if (odgovor != null && odgovor.startsWith("ERR|")) {
+	                        javax.swing.JOptionPane.showMessageDialog(null, odgovor);
+	                    } else {
+	                        javax.swing.JOptionPane.showMessageDialog(
+	                                null, "Nepoznat odgovor servera: " + odgovor);
+	                    }
+
+	                } catch (Exception ex) {
+	                    javax.swing.JOptionPane.showMessageDialog(
+	                            null, "Greška pri povezivanju sa serverom.");
+	                }
+	            
+				}
+			});
+			btnNewButton_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnNewButton_1.setBounds(168, 77, 117, 29);
+		}
+		return btnNewButton_1;
 	}
 }
