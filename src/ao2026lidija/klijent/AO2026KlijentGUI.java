@@ -124,6 +124,10 @@ public class AO2026KlijentGUI extends JFrame {
 	private JLabel lblLozinkaIzmena;
 	
 	private Smena staraSmenaZaIzmenu = null;   // cuvam trenutnu smenu sa servera
+	private JLabel lblNewLabel_15_1_2_1;
+	private JLabel lblNewLabel_15_1_2_2;
+	private JButton btnMeni_1;
+	private JButton btnMeni_2;
 
 	
 	/**
@@ -1028,6 +1032,8 @@ public class AO2026KlijentGUI extends JFrame {
 			brisanjePanel.add(getTxtpasswordOtkazivanje());
 			brisanjePanel.add(getLblNewLabel_19());
 			brisanjePanel.add(getBtnPotvrdiBrisanje());
+			brisanjePanel.add(getLblNewLabel_15_1_2_2());
+			brisanjePanel.add(getBtnMeni_1());
 		}
 		return brisanjePanel;
 	}
@@ -1298,6 +1304,8 @@ public class AO2026KlijentGUI extends JFrame {
 			IzmenePanel.add(getBtnIzmeniPotrva());
 			IzmenePanel.add(getTxtPasswordIzmena());
 			IzmenePanel.add(getLblLozinkaIzmena());
+			IzmenePanel.add(getLblNewLabel_15_1_2_1());
+			IzmenePanel.add(getBtnMeni_2());
 		}
 		return IzmenePanel;
 	}
@@ -1590,5 +1598,50 @@ public class AO2026KlijentGUI extends JFrame {
 			lblLozinkaIzmena.setBounds(164, 195, 178, 16);
 		}
 		return lblLozinkaIzmena;
+	}
+	private JLabel getLblNewLabel_15_1_2_1() {
+		if (lblNewLabel_15_1_2_1 == null) {
+			lblNewLabel_15_1_2_1 = new JLabel("Nazad na meni:");
+			lblNewLabel_15_1_2_1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+			lblNewLabel_15_1_2_1.setBounds(226, 225, 125, 16);
+		}
+		return lblNewLabel_15_1_2_1;
+	}
+	private JLabel getLblNewLabel_15_1_2_2() {
+		if (lblNewLabel_15_1_2_2 == null) {
+			lblNewLabel_15_1_2_2 = new JLabel("Nazad na meni:");
+			lblNewLabel_15_1_2_2.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+			lblNewLabel_15_1_2_2.setBounds(223, 230, 125, 16);
+		}
+		return lblNewLabel_15_1_2_2;
+	}
+	private JButton getBtnMeni_1() {
+		if (btnMeni_1 == null) {
+			btnMeni_1 = new JButton("MENI");
+			btnMeni_2.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// vrati na meni 
+	                ((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "MENI");
+				}
+			});
+			
+			btnMeni_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnMeni_1.setBounds(326, 225, 108, 29);
+		}
+		return btnMeni_1;
+	}
+	private JButton getBtnMeni_2() {
+		if (btnMeni_2 == null) {
+			btnMeni_2 = new JButton("MENI");
+			btnMeni_2.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// vrati na meni 
+	                ((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "MENI");
+				}
+			});
+			btnMeni_2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnMeni_2.setBounds(326, 220, 108, 29);
+		}
+		return btnMeni_2;
 	}
 }
