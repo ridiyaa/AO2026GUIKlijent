@@ -97,7 +97,7 @@ public class AO2026KlijentGUI extends JFrame {
 	private JButton btnPrikaziPrijavuZaBrisanje;
 	private JLabel lblPrijavaZaBrisanje;
 	private JPasswordField txtpasswordOtkazivanje;
-	private JLabel lblNewLabel_19;
+	private JLabel lblPotvrdnaLozinka;
 	private JButton btnPotvrdiBrisanje;
 	public enum Smena { JUTARNJA, POPODEVNA, VECERNJA }
 	public enum Pozicija { INFO, REDAR, MEDIJI, VIP }
@@ -175,7 +175,7 @@ public class AO2026KlijentGUI extends JFrame {
 		btnPotvrdiBrisanje.setEnabled(false);
 		contentPane.add(getIzmenePanel(), "IZMENE");
 		datumZaBrisanje = null;
-		lblNewLabel_19.setVisible(false);
+		lblPotvrdnaLozinka.setVisible(false);
 
 		//izmena
 		cbPozicijaIzmena.setVisible(false);
@@ -299,7 +299,7 @@ public class AO2026KlijentGUI extends JFrame {
 
 	                } catch (Exception ex) {
 	                    javax.swing.JOptionPane.showMessageDialog(
-	                            null, "Greška pri povezivanju sa serverom.");
+	                            null, "Greska pri povezivanju sa serverom.");
 	                }
 	            }
 	        }); 
@@ -587,7 +587,7 @@ public class AO2026KlijentGUI extends JFrame {
 
 	                    // OBRADA ODGOVORA
 	                    if ("OK|REGISTER".equals(odgovor)) {
-	                    	JOptionPane.showMessageDialog(null, "Uspešno ste se registrovali!");
+	                    	JOptionPane.showMessageDialog(null, "Uspesno ste se registrovali!");
 	                    	((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "PRIJAVA");
 	                    } else if (odgovor != null && odgovor.startsWith("ERR|")) {
 	                        javax.swing.JOptionPane.showMessageDialog(null, odgovor);
@@ -597,7 +597,7 @@ public class AO2026KlijentGUI extends JFrame {
 	                    }
 
 	                } catch (Exception ex) {
-	                    javax.swing.JOptionPane.showMessageDialog(null, "Greška pri povezivanju sa serverom.");
+	                    javax.swing.JOptionPane.showMessageDialog(null, "Greska pri povezivanju sa serverom.");
 	                }
 	            }
 	        });
@@ -774,7 +774,7 @@ public class AO2026KlijentGUI extends JFrame {
 	                    }
 
 	                } catch (Exception ex) {
-	                    javax.swing.JOptionPane.showMessageDialog(null, "Greška pri povezivanju sa serverom.");
+	                    javax.swing.JOptionPane.showMessageDialog(null, "Greska pri povezivanju sa serverom.");
 	                }
 	            
 					
@@ -971,7 +971,7 @@ public class AO2026KlijentGUI extends JFrame {
 
 	                } catch (Exception ex) {
 	                    javax.swing.JOptionPane.showMessageDialog(
-	                            null, "Greška pri povezivanju sa serverom.");
+	                            null, "Greska pri povezivanju sa serverom.");
 	                }
 	            
 				}
@@ -1030,7 +1030,7 @@ public class AO2026KlijentGUI extends JFrame {
 			brisanjePanel.add(getBtnPrikaziPrijavuZaBrisanje());
 			brisanjePanel.add(getLblPrijavaZaBrisanje());
 			brisanjePanel.add(getTxtpasswordOtkazivanje());
-			brisanjePanel.add(getLblNewLabel_19());
+			brisanjePanel.add(getLblPotvrdnaLozinka());
 			brisanjePanel.add(getBtnPotvrdiBrisanje());
 			brisanjePanel.add(getLblNewLabel_15_1_2_2());
 			brisanjePanel.add(getBtnMeni_1());
@@ -1104,7 +1104,7 @@ public class AO2026KlijentGUI extends JFrame {
 
 					        // prikaz detalja
 					        lblPrijavaZaBrisanje.setText(
-					            "<html><b>Pronađena prijava</b><br>" +
+					            "<html><b>Pronadjena prijava</b><br>" +
 					            "Datum: " + datumSrv + "<br>" +
 					            "Smena: " + smena + "<br>" +
 					            "Pozicija: " + pozicija + "<br>" +
@@ -1119,13 +1119,16 @@ public class AO2026KlijentGUI extends JFrame {
 					        // otvori opciju za potvrdu lozinkom
 					        txtpasswordOtkazivanje.setText("");
 					        txtpasswordOtkazivanje.setVisible(true);
+//
+					        
+					        lblPotvrdnaLozinka.setVisible(true);
 					        
 					        btnPotvrdiBrisanje.setVisible(true);
 
 					        // ako je zakljucana ili zavrsena - ne daj brisanje
 					        if ("ZAKLJUCANA".equals(status) || "ZAVRSENA".equals(status)) {
 					            btnPotvrdiBrisanje.setEnabled(false);
-					            JOptionPane.showMessageDialog(null, "Prijava je " + status + " i ne može se otkazati.");
+					            JOptionPane.showMessageDialog(null, "Prijava je " + status + " i ne moze se otkazati.");
 					        } else {
 					            btnPotvrdiBrisanje.setEnabled(true);
 					        }
@@ -1136,7 +1139,7 @@ public class AO2026KlijentGUI extends JFrame {
 					        lblPrijavaZaBrisanje.setVisible(false);
 					        txtpasswordOtkazivanje.setVisible(false);
 					        btnPotvrdiBrisanje.setEnabled(false);
-					        lblNewLabel_19.setVisible(true);
+					        lblPotvrdnaLozinka.setVisible(true);
 
 					        JOptionPane.showMessageDialog(null, odgovor);
 					    } else {
@@ -1144,7 +1147,7 @@ public class AO2026KlijentGUI extends JFrame {
 					    }
 
 					} catch (Exception ex) {
-					    JOptionPane.showMessageDialog(null, "Greška pri povezivanju sa serverom.");
+					    JOptionPane.showMessageDialog(null, "Greska pri povezivanju sa serverom.");
 					}
 
 					
@@ -1171,13 +1174,13 @@ public class AO2026KlijentGUI extends JFrame {
 		}
 		return txtpasswordOtkazivanje;
 	}
-	private JLabel getLblNewLabel_19() {
-		if (lblNewLabel_19 == null) {
-			lblNewLabel_19 = new JLabel("Unesite loziku");
-			lblNewLabel_19.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			lblNewLabel_19.setBounds(181, 196, 94, 16);
+	private JLabel getLblPotvrdnaLozinka() {
+		if (lblPotvrdnaLozinka == null) {
+			lblPotvrdnaLozinka = new JLabel("Unesite loziku");
+			lblPotvrdnaLozinka.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			lblPotvrdnaLozinka.setBounds(181, 196, 94, 16);
 		}
-		return lblNewLabel_19;
+		return lblPotvrdnaLozinka;
 	}
 	private JButton getBtnPotvrdiBrisanje() {
 		if (btnPotvrdiBrisanje == null) {
@@ -1187,7 +1190,7 @@ public class AO2026KlijentGUI extends JFrame {
 					String username = ulogovaniUsername;
 
 					if (datumZaBrisanje == null) {
-					    JOptionPane.showMessageDialog(null, "Prvo pronađite prijavu (Prikaži).");
+					    JOptionPane.showMessageDialog(null, "Prvo pronadjite prijavu (Prikazi).");
 					    return;
 					}
 
@@ -1200,7 +1203,7 @@ public class AO2026KlijentGUI extends JFrame {
 					// confirm dialog 
 					int ok = JOptionPane.showConfirmDialog(
 					    null,
-					    "Da li ste sigurni da želite da otkažete prijavu za datum: " + datumZaBrisanje + "?",
+					    "Da li ste sigurni da zelite da otkazete prijavu za datum: " + datumZaBrisanje + "?",
 					    "Potvrda",
 					    JOptionPane.YES_NO_OPTION
 					);
@@ -1215,7 +1218,7 @@ public class AO2026KlijentGUI extends JFrame {
 					    String odgovor = in.readLine();
 
 					    if ("OK|OTKAZI".equals(odgovor)) {
-					        JOptionPane.showMessageDialog(null, "Prijava je uspešno otkazana!");
+					        JOptionPane.showMessageDialog(null, "Prijava je uspesno otkazana!");
 					        // vrati na predgled prijava
 					        
 					        ((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "PREGLED");
@@ -1225,7 +1228,7 @@ public class AO2026KlijentGUI extends JFrame {
 					        txtDatumZaOtkazivanje.setText("");
 					        lblPrijavaZaBrisanje.setVisible(false);
 					        txtpasswordOtkazivanje.setText("");
-					        lblNewLabel_19.setVisible(false);
+					        lblPotvrdnaLozinka.setVisible(false);
 					        txtpasswordOtkazivanje.setVisible(false);
 					        btnPotvrdiBrisanje.setVisible(false);
 					        btnPotvrdiBrisanje.setEnabled(false);
@@ -1237,7 +1240,7 @@ public class AO2026KlijentGUI extends JFrame {
 					    }
 
 					} catch (Exception ex) {
-					    JOptionPane.showMessageDialog(null, "Greška pri povezivanju sa serverom.");
+					    JOptionPane.showMessageDialog(null, "Greska pri povezivanju sa serverom.");
 					}
 
 				}
@@ -1396,7 +1399,7 @@ public class AO2026KlijentGUI extends JFrame {
 					        }
 
 					        if (datumVol.isAfter(krajTurnira)) {
-					            JOptionPane.showMessageDialog(null, "Datum ne može biti posle 01-02-2026.");
+					            JOptionPane.showMessageDialog(null, "Datum ne moze biti posle 01-02-2026.");
 					            return;
 					        }
 
@@ -1447,7 +1450,7 @@ public class AO2026KlijentGUI extends JFrame {
 					                // ako je zakljucana ili zavrsena - nema izmene
 					                if ("ZAKLJUCANA".equals(status) || "ZAVRSENA".equals(status)) {
 					                	btnIzmeniPotrva.setEnabled(false);
-					                    JOptionPane.showMessageDialog(null, "Prijava je " + status + " i ne može se izmeniti.");
+					                    JOptionPane.showMessageDialog(null, "Prijava je " + status + " i ne moze se izmeniti.");
 					                } else {
 					                	btnIzmeniPotrva.setEnabled(true);
 					                }
@@ -1477,7 +1480,7 @@ public class AO2026KlijentGUI extends JFrame {
 					            }
 
 					        } catch (Exception ex) {
-					            JOptionPane.showMessageDialog(null, "Greška pri povezivanju sa serverom.");
+					            JOptionPane.showMessageDialog(null, "Greska pri povezivanju sa serverom.");
 					        }
 					    }
 					});
@@ -1529,7 +1532,7 @@ public class AO2026KlijentGUI extends JFrame {
 
 				        int ok = JOptionPane.showConfirmDialog(
 				            null,
-				            "Da li ste sigurni da želite da izmenite prijavu za datum: " + datumZaIzmenu + "?",
+				            "Da li ste sigurni da zelite da izmenite prijavu za datum: " + datumZaIzmenu + "?",
 				            "Potvrda izmene",
 				            JOptionPane.YES_NO_OPTION
 				        );
@@ -1546,7 +1549,7 @@ public class AO2026KlijentGUI extends JFrame {
 				            String odgovor = in.readLine();
 
 				            if ("OK|IZMENI".equals(odgovor)) {
-				                JOptionPane.showMessageDialog(null, "Prijava je uspešno izmenjena!");
+				                JOptionPane.showMessageDialog(null, "Prijava je uspesno izmenjena!");
 
 				                // reset UI
 				                datumZaIzmenu = null;
@@ -1574,7 +1577,7 @@ public class AO2026KlijentGUI extends JFrame {
 				            }
 
 				        } catch (Exception ex) {
-				            JOptionPane.showMessageDialog(null, "Greška pri povezivanju sa serverom.");
+				            JOptionPane.showMessageDialog(null, "Greska pri povezivanju sa serverom.");
 				        }
 				    }
 				});
@@ -1616,19 +1619,18 @@ public class AO2026KlijentGUI extends JFrame {
 		return lblNewLabel_15_1_2_2;
 	}
 	private JButton getBtnMeni_1() {
-		if (btnMeni_1 == null) {
-			btnMeni_1 = new JButton("MENI");
-			btnMeni_2.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					// vrati na meni 
-	                ((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "MENI");
-				}
-			});
-			
-			btnMeni_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-			btnMeni_1.setBounds(326, 225, 108, 29);
-		}
-		return btnMeni_1;
+	    if (btnMeni_1 == null) {
+	        btnMeni_1 = new JButton("MENI");
+	        btnMeni_1.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                ((CardLayout) contentPane.getLayout()).show(contentPane, "MENI");
+	            }
+	        });
+
+	        btnMeni_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+	        btnMeni_1.setBounds(326, 225, 108, 29);
+	    }
+	    return btnMeni_1;
 	}
 	private JButton getBtnMeni_2() {
 		if (btnMeni_2 == null) {
