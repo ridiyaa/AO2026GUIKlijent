@@ -300,7 +300,7 @@ public class AO2026KlijentGUI extends JFrame {
 	                    klijentSoket.close();
 
 	                    if ("OK|LOGIN".equals(odgovor)) {
-	                        ((java.awt.CardLayout) contentPane.getLayout()).next(contentPane);
+	                    	((CardLayout) contentPane.getLayout()).show(contentPane, "MENI");
 	  ////// kasnije za stranicu za prijavu za smenu da mi se promeni label u trenutnog korisnika                      
 	                        ulogovaniUsername = username;
 	                        getLblUlogovanKorisnik().setText(ulogovaniUsername);
@@ -1712,11 +1712,12 @@ public class AO2026KlijentGUI extends JFrame {
 	                    String odgovor = ulaz.readLine();
 	                    klijentSoket.close();
 
-	                    if (odgovor.startsWith("OK|PONG")) {
+	                    if (odgovor != null && odgovor.startsWith("OK|PONG")) {
 	                      // prikazi btn za prijavu i registraciju
 	                    	String[] d = odgovor.split("\\|", 3);
 
-			                String tekstZaIspis = d[2];
+	                    	String tekstZaIspis = (d.length == 3) ? d[2] : "Uspesno povezivanje.";
+	                    	
 	                    	btnNewButton_1.setVisible(false);
 	                    	btnPocetnaPrijava.setVisible(true);
 	                    	btnPocetnaRegistracija.setVisible(true);
