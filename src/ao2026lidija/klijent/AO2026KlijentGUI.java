@@ -145,6 +145,9 @@ public class AO2026KlijentGUI extends JFrame {
 	private JLabel lblNewLabel_11_1;
 	private JTextField textField_3;
 	private JButton btnNewButton_2;
+	private JButton btnRegistracija_1;
+	private JLabel lblNewLabel_3_1;
+	private JButton btnGost;
 
 	
 	/**
@@ -224,6 +227,7 @@ public class AO2026KlijentGUI extends JFrame {
 		textField_1.setVisible(false);
 		textField_3.setVisible(false);
 		textField_2.setVisible(false);
+		btnRegistracija_1.setVisible(false);
 		
 	}
 
@@ -241,6 +245,8 @@ public class AO2026KlijentGUI extends JFrame {
 			loginPanel.add(getBtnPrijava());
 			loginPanel.add(getLblNewLabel_3());
 			loginPanel.add(getBtnRegistrujPanel());
+			loginPanel.add(getLblNewLabel_3_1());
+			loginPanel.add(getBtnGost());
 		}
 		return loginPanel;
 	}
@@ -330,8 +336,10 @@ public class AO2026KlijentGUI extends JFrame {
 	    					// prikazi i dugne za odjavu
 	    					
 	    					btnOdjava.setVisible(true);
+	    					btnRegistracija_1.setVisible(false);
 	    					
 	    					// skloni podatke za gosta u prijavi za smenu za slucaj da su ostali
+	    					
 	    					lblNewLabel_5_1.setVisible(false);
 	    					lblNewLabel_6_1.setVisible(false);
 	    					lblNewLabel_7_1.setVisible(false);
@@ -373,6 +381,7 @@ public class AO2026KlijentGUI extends JFrame {
 			menuPanel.add(idiNaPrijavuSmene());
 			menuPanel.add(getBtnPregled());
 			menuPanel.add(getBtnOdjava());
+			menuPanel.add(getBtnRegistracija_1());
 		}
 		return menuPanel;
 	}
@@ -416,6 +425,7 @@ public class AO2026KlijentGUI extends JFrame {
 			btnOdjava.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "PRIJAVA");
+					btnRegistracija_1.setVisible(false);
 					ulogovaniUsername = null;
 
 ;
@@ -1970,6 +1980,7 @@ public class AO2026KlijentGUI extends JFrame {
 					lblNewLabel_15_1_1_1.setVisible(false);
 					btnIzmena.setVisible(false);
 					btnOdjava.setVisible(false);
+					btnRegistracija_1.setVisible(true);
 					
 					ulogovaniUsername="gost";
 					getLblUlogovanKorisnik().setText(ulogovaniUsername);
@@ -1980,5 +1991,59 @@ public class AO2026KlijentGUI extends JFrame {
 			btnNewButton_2.setBounds(123, 201, 185, 29);
 		}
 		return btnNewButton_2;
+	}
+	private JButton getBtnRegistracija_1() {
+		if (btnRegistracija_1 == null) {
+			btnRegistracija_1 = new JButton("Registracija");
+			btnRegistracija_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "REGISTRACIJA");
+				}
+			});
+			btnRegistracija_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnRegistracija_1.setBounds(20, 121, 160, 30);
+		}
+		return btnRegistracija_1;
+	}
+	private JLabel getLblNewLabel_3_1() {
+		if (lblNewLabel_3_1 == null) {
+			lblNewLabel_3_1 = new JLabel("Nastavite u rezimu");
+			lblNewLabel_3_1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+			lblNewLabel_3_1.setBounds(19, 177, 130, 16);
+		}
+		return lblNewLabel_3_1;
+	}
+	private JButton getBtnGost() {
+		if (btnGost == null) {
+			btnGost = new JButton("GOST");
+			btnGost.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// prelazak na prijavu u gost rezimu
+					lblNewLabel_5_1.setVisible(true);
+					lblNewLabel_6_1.setVisible(true);
+					lblNewLabel_7_1.setVisible(true);
+					lblNewLabel_11_1.setVisible(true);
+					textField.setVisible(true);
+					textField_1.setVisible(true);
+					textField_3.setVisible(true);
+					textField_2.setVisible(true);
+					// skloni dugme za odjavu i ukloni opcije za izmenu i za otkazivanje
+					
+					lblNewLabel_15_1_1.setVisible(false);
+					btnOtkazivanje.setVisible(false);
+					lblNewLabel_15_1_1_1.setVisible(false);
+					btnIzmena.setVisible(false);
+					btnOdjava.setVisible(false);
+					btnRegistracija_1.setVisible(true);
+					
+					ulogovaniUsername="gost";
+					getLblUlogovanKorisnik().setText(ulogovaniUsername);
+					((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "MENI");
+				}
+			});
+			btnGost.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnGost.setBounds(140, 172, 130, 29);
+		}
+		return btnGost;
 	}
 }
