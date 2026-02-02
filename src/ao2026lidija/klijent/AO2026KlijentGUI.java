@@ -912,7 +912,7 @@ public class AO2026KlijentGUI extends JFrame {
 	                    klijentSoket.close();
 
 	                    if (odgovor != null && odgovor.startsWith("OK|PREGLED|")) {
-	                        // obradi i ispiši
+	                        // obradi i ispisi
 	                    	
 	                    	// OK|PREGLED|ime|prezime|username|jmbg|email|count|payload
 	                    	String[] delovi = odgovor.split("\\|", 9);
@@ -1076,7 +1076,7 @@ public class AO2026KlijentGUI extends JFrame {
 					}
 
 					try {
-					    // validacija datuma (da ne saljes glupost)
+					    // validacija datuma
 					    java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy");
 					    java.time.LocalDate.parse(datum, fmt);
 					} catch (Exception ex) {
@@ -1390,8 +1390,9 @@ public class AO2026KlijentGUI extends JFrame {
 					        }
 
 					        // pproveravam datum prijave pre slanja serveru
+					        // promenjen datum u 5.2.
 					        java.time.LocalDate sutra = java.time.LocalDate.now().plusDays(1);
-					        java.time.LocalDate krajTurnira = java.time.LocalDate.of(2026, 2, 1);
+					        java.time.LocalDate krajTurnira = java.time.LocalDate.of(2026, 2, 5);
 
 					        if (datumVol.isBefore(sutra)) {
 					            JOptionPane.showMessageDialog(null, "Izmena nije dozvoljena za datume pre prekosutra.");
@@ -1399,7 +1400,7 @@ public class AO2026KlijentGUI extends JFrame {
 					        }
 
 					        if (datumVol.isAfter(krajTurnira)) {
-					            JOptionPane.showMessageDialog(null, "Datum ne moze biti posle 01-02-2026.");
+					            JOptionPane.showMessageDialog(null, "Datum ne moze biti posle 05-02-2026.");
 					            return;
 					        }
 
