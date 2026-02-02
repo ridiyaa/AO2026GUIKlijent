@@ -32,6 +32,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
+import javax.swing.SwingConstants;
 
 public class AO2026KlijentGUI extends JFrame {
 
@@ -128,6 +129,13 @@ public class AO2026KlijentGUI extends JFrame {
 	private JLabel lblNewLabel_15_1_2_2;
 	private JButton btnMeni_1;
 	private JButton btnMeni_2;
+	private JPanel pocetniPanel;
+	private JLabel lblNewLabel_19;
+	private JLabel lblNewLabel_20;
+	private JButton btnNewButton_1;
+	private JLabel lblUspesnoPovezivanje;
+	private JButton btnPocetnaPrijava;
+	private JButton btnPocetnaRegistracija;
 
 	
 	/**
@@ -157,6 +165,7 @@ public class AO2026KlijentGUI extends JFrame {
 ////////////////////////////////////////
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));
+		contentPane.add(getPocetniPanel(), "POCETNI");
 		contentPane.add(getLoginPanel(), "PRIJAVA");
 		contentPane.add(getMenuPanel(), "MENI");
 		contentPane.add(getRegistracijaPanel(), "REGISTRACIJA");
@@ -188,6 +197,11 @@ public class AO2026KlijentGUI extends JFrame {
 		btnIzmeniPotrva.setEnabled(false);
 		
 		
+		
+		// 
+		lblUspesnoPovezivanje.setVisible(false);
+		btnPocetnaPrijava.setVisible(false);
+		btnPocetnaRegistracija.setVisible(false);
 		
 	}
 
@@ -1646,5 +1660,120 @@ public class AO2026KlijentGUI extends JFrame {
 			btnMeni_2.setBounds(326, 220, 108, 29);
 		}
 		return btnMeni_2;
+	}
+	private JPanel getPocetniPanel() {
+		if (pocetniPanel == null) {
+			pocetniPanel = new JPanel();
+			pocetniPanel.setLayout(null);
+			pocetniPanel.add(getLblNewLabel_19());
+			pocetniPanel.add(getLblNewLabel_20());
+			pocetniPanel.add(getBtnNewButton_1());
+			pocetniPanel.add(getLblUspesnoPovezivanje());
+			pocetniPanel.add(getBtnPocetnaPrijava());
+			pocetniPanel.add(getBtnPocetnaRegistracija());
+		}
+		return pocetniPanel;
+	}
+	private JLabel getLblNewLabel_19() {
+		if (lblNewLabel_19 == null) {
+			lblNewLabel_19 = new JLabel("AUSTRALIAN OPEN 2026");
+			lblNewLabel_19.setBounds(6, 6, 428, 66);
+			lblNewLabel_19.setFont(new Font("Times New Roman", Font.BOLD, 36));
+		}
+		return lblNewLabel_19;
+	}
+	private JLabel getLblNewLabel_20() {
+		if (lblNewLabel_20 == null) {
+			lblNewLabel_20 = new JLabel("Volonterska aplikacija");
+			lblNewLabel_20.setFont(new Font("Times New Roman", Font.PLAIN, 17));
+			lblNewLabel_20.setBounds(121, 65, 179, 16);
+		}
+		return lblNewLabel_20;
+	}
+	private JButton getBtnNewButton_1() {
+		if (btnNewButton_1 == null) {
+			btnNewButton_1 = new JButton("Proverite vezu sa serverom");
+			btnNewButton_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					// "provera veze sa serverom"
+					
+					try {
+	                    Socket klijentSoket = new Socket("localhost", 8090);
+
+	                    DataOutputStream izlaz =
+	                            new DataOutputStream(klijentSoket.getOutputStream());
+	                    BufferedReader ulaz =
+	                            new BufferedReader(new InputStreamReader(klijentSoket.getInputStream()));
+///////////// PING\n
+	                 
+	                    izlaz.writeBytes("PING\n");
+
+	                    String odgovor = ulaz.readLine();
+	                    klijentSoket.close();
+
+	                    if (odgovor.startsWith("OK|PONG")) {
+	                      // prikazi btn za prijavu i registraciju
+	                    	String[] d = odgovor.split("\\|", 3);
+
+			                String tekstZaIspis = d[2];
+	                    	btnNewButton_1.setVisible(false);
+	                    	btnPocetnaPrijava.setVisible(true);
+	                    	btnPocetnaRegistracija.setVisible(true);
+	                    	lblUspesnoPovezivanje.setText(tekstZaIspis);
+	                    	lblUspesnoPovezivanje.setVisible(true);
+	                    	
+	                    } else if (odgovor != null && odgovor.startsWith("ERR|")) {
+	                        javax.swing.JOptionPane.showMessageDialog(null, odgovor);
+	                    } else {
+	                        javax.swing.JOptionPane.showMessageDialog(
+	                                null, "Nepoznat odgovor servera: " + odgovor);
+	                    }
+
+	                } catch (Exception ex) {
+	                    javax.swing.JOptionPane.showMessageDialog(
+	                            null, "Greska pri povezivanju sa serverom.");
+	                }
+	            }
+			});
+			btnNewButton_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnNewButton_1.setBounds(99, 84, 209, 29);
+		}
+		return btnNewButton_1;
+	}
+	private JLabel getLblUspesnoPovezivanje() {
+		if (lblUspesnoPovezivanje == null) {
+			lblUspesnoPovezivanje = new JLabel("New label");
+			lblUspesnoPovezivanje.setHorizontalAlignment(SwingConstants.CENTER);
+			lblUspesnoPovezivanje.setBounds(78, 116, 246, 29);
+		}
+		return lblUspesnoPovezivanje;
+	}
+	private JButton getBtnPocetnaPrijava() {
+		if (btnPocetnaPrijava == null) {
+			btnPocetnaPrijava = new JButton("Prijava");
+			btnPocetnaPrijava.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "PRIJAVA");
+				}
+			});
+			btnPocetnaPrijava.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnPocetnaPrijava.setBounds(78, 167, 117, 29);
+		}
+		return btnPocetnaPrijava;
+	}
+	private JButton getBtnPocetnaRegistracija() {
+		if (btnPocetnaRegistracija == null) {
+			btnPocetnaRegistracija = new JButton("Registracija");
+			btnPocetnaRegistracija.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					((java.awt.CardLayout) contentPane.getLayout()).show(contentPane, "REGISTRACIJA");
+				}
+			});
+			btnPocetnaRegistracija.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+			btnPocetnaRegistracija.setBounds(207, 167, 117, 29);
+		}
+		return btnPocetnaRegistracija;
 	}
 }
